@@ -1,0 +1,25 @@
+name: Deploy ArgoCD Top level App
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - 'dev'
+    paths: 
+      - 'observability/top-level-app/TopLevelApp.yaml'
+      - '.github/workflows/deploy-top-level-app.yaml'
+  
+jobs:
+
+  create-top-level-app:
+    runs-on: gp_runner_01
+
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Create Top Level App
+      run: |
+        /snap/bin/microk8s kubectl apply -f 'observability/top-level-app/TopLevelApp.yaml'

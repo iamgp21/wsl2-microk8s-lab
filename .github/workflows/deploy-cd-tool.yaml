@@ -1,0 +1,27 @@
+name: Deploy ArgoCD Tool
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - 'dev'
+    paths: 
+      - 'delivery-tool/chart/argo-cd/**'
+      - '.github/workflows/deploy-cd-tool.yaml'
+      
+jobs:
+  deploy-argocd:
+    runs-on: gp_runner_01
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Create ArgoCD Namespace
+      run:
+       /snap/bin/microk8s kubectl create ns argocd
+
+    - name: Deploy ArgoCD
+      run:
+       /snap/bin/microk8s helm upgrade argocd -f 'delivery-tool/chart/argo-cd/argocd.yaml' delivery-tool/chart/argo-cd -n argocd --install

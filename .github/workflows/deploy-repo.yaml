@@ -1,0 +1,24 @@
+name: Deploy ArgoCD Repo
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - 'dev'
+    paths: 
+      - 'observability/repository/repo.yaml'
+      - '.github/workflows/deploy-repo.yaml'
+  
+jobs:
+  Create-Repository:
+    runs-on: gp_runner_01
+
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Create Repository
+      run: |
+        /snap/bin/microk8s kubectl apply -f 'observability/repository/repo.yaml'
