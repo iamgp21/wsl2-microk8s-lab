@@ -1,0 +1,7 @@
+{
+  "tenantid": "grafana",
+  "cluster": {
+    "namespace": "grafana",
+    "address": "https://kubernetes.default.svc"
+  }
+}
